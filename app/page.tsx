@@ -50,8 +50,40 @@ const previousMediaSources = [
 ];
 
 function correctCaption(caption: unknown) {
-  return caption === previousMiniCaption ? correctedMiniCaption : String(caption ?? '');
+  const text = String(caption ?? '');
+  return text.trim() === previousMiniCaption ? correctedMiniCaption : text;
 }
+
+const defaultCaptionList = [
+  'Su gimine trasoje.',
+  '',
+  'Ogis visada Tavo pusėje gulėdavo...',
+  'Aš čia visai laimingas buvau, patikėk manim.',
+  correctedMiniCaption,
+  'Važiavom į Platelius.',
+  'Prieš kelionę į Suomiją....',
+  'Po aštuonių!',
+  'Po šimtadienio...',
+  'Su manimi baigus dvyliką.',
+  'Rugsėjo pirmoji, antra klasė. Mama visada šalia!!!!',
+  'Crazy Mama',
+  'Kotrynos ir Tautvydo vestuvės. Geriausiai atrodėm. 😎',
+  'Diplomas Šiauliuose.',
+  'Šita gera fotke.',
+  'Kelias iš Kauno į Šiaulius, 2022 m.',
+  '🙈',
+  'Du byngalos per Karolio vestuves. 😂',
+  'Su gimine prie baidarių.',
+  'Architektų g. daugiabutis.',
+  'Labai geras video, labai gerai matosi šypsena! 😊',
+  'Lizas kanale, pirmasis žmogus kuris bėgo į pagalbą buvo mano Mama....😂',
+];
+
+const defaultCaptions = Object.fromEntries(
+  defaultCaptionList.flatMap((caption, index) =>
+    caption ? [[media[index].src, caption]] : [],
+  ),
+);
 
 export default function Home() {
   const [password, setPassword] = useState('');
@@ -84,9 +116,9 @@ export default function Home() {
         ),
       );
 
-      return { ...migratedCaptions, ...directCaptions };
+      return { ...defaultCaptions, ...migratedCaptions, ...directCaptions };
     } catch {
-      return {};
+      return defaultCaptions;
     }
   });
 
